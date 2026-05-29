@@ -1,0 +1,11 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Recycler_view_romanov" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.Recycler_view_romanov" parent="Base.Theme.Recycler_view_romanov">
+        <item name="colorPrimaryDark">@color/blue</item>
+    </style>
+</resources>
