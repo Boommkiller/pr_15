@@ -56,7 +56,7 @@ public class PopularActivity extends AppCompatActivity {
 
         CardList.setLayoutManager(new GridLayoutManager(this, 2));
 
-        ItemAdapter CardAdapter = new ItemAdapter(this, Items);
+        ItemAdapter CardAdapter = new ItemAdapter(this, Items, MainActivity.init.AddBasket);
         CardList.setAdapter(CardAdapter);
     }
 
