@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.recycler_view_romanov.R;
-import com.example.recycler_view_romanov.category.iOnClickInterface;
+import com.example.recycler_view_romanov.iOnClickInterface;
 
 import java.util.ArrayList;
 

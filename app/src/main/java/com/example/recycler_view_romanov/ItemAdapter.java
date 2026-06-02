@@ -5,8 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.example.recycler_view_romanov.basket.Basket;
-
+import android.widget.LinearLayout;
+import com.example.recycler_view_romanov.iOnClickInterface;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
