@@ -7,6 +7,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -51,13 +52,27 @@ public class BasketActivity extends AppCompatActivity {
         tvSum = findViewById(R.id.tv_sum);
         tvAllSum = findViewById(R.id.tv_all_sum);
 
+        if (MainActivity.init.BasketList == null) {
+            MainActivity.init.BasketList = new ArrayList<>();
+        }
+
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(SwipeAdapter);
         itemTouchHelper.attachToRecyclerView(BasketRV);
 
         BasketAdapter = new BasketAdapter(this, MainActivity.init.BasketList, Delete, EventCost);
         BasketRV.setAdapter(BasketAdapter);
 
+        UpdateItemCount();
+
         CostCalculation();
+    }
+
+    public void UpdateItemCount() {
+        TextView textView = findViewById(R.id.textView);
+        if (textView != null) {
+            int count = MainActivity.init.BasketList.size();
+            textView.setText(count + " товара");
+        }
     }
 
     public void CostCalculation() {
@@ -69,6 +84,12 @@ public class BasketActivity extends AppCompatActivity {
         tvSum.setText("₽" + ItemPrice);
         ItemPrice += 60.20;
         tvAllSum.setText("₽" + ItemPrice);
+
+        TextView textView = findViewById(R.id.textView);
+        if (textView != null) {
+            int count = MainActivity.init.BasketList.size();
+            textView.setText(count + " товара");
+        }
     }
 
     public void ClosePopularActivity(View view) {
@@ -83,7 +104,12 @@ public class BasketActivity extends AppCompatActivity {
 
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-            BasketRV.setAdapter(BasketAdapter);
+            int position = viewHolder.getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                MainActivity.init.BasketList.remove(position);
+                BasketRV.getAdapter().notifyItemRemoved(position);
+                CostCalculation();
+            }
         }
 
         @Override
@@ -91,8 +117,9 @@ public class BasketActivity extends AppCompatActivity {
             Resources r = getResources();
             float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 58, r.getDisplayMetrics());
 
-            LinearLayout btnDelete = viewHolder.itemView.findViewById(R.id.ll_delete);
-            LinearLayout btnCount = viewHolder.itemView.findViewById(R.id.ll_count);
+            View itemView = viewHolder.itemView;
+            LinearLayout btnDelete = itemView.findViewById(R.id.ll_delete);
+            LinearLayout btnCount = itemView.findViewById(R.id.ll_count);
 
             if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
                 if (dX < -px) {
@@ -106,6 +133,7 @@ public class BasketActivity extends AppCompatActivity {
                     btnCount.setVisibility(View.GONE);
                 }
             }
+
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };

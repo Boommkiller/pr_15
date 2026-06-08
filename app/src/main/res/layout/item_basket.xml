@@ -70,11 +70,14 @@
             <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:text="Nike Club Max"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginRight="9dp"
+                android:text="Nike Club Max"
+                android:textSize="12sp"
+                android:maxLines="2"
+                android:ellipsize="end"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/img"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -83,10 +86,12 @@
                 android:id="@+id/tv_price"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="9dp"
-                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginRight="9dp"
                 android:text="₽584.95"
+                android:textSize="14sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/img"
                 app:layout_constraintTop_toBottomOf="@+id/tv_name" />
@@ -97,6 +102,7 @@
             android:layout_width="58dp"
             android:layout_height="104dp"
             android:background="@drawable/background_delete"
+            android:orientation="horizontal"
             android:visibility="gone" />
 
     </LinearLayout>

@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import com.example.recycler_view_romanov.basket.Basket;
+import com.example.recycler_view_romanov.basket.BasketActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,21 +22,32 @@ public class MainActivity extends AppCompatActivity {
     public iOnClickInterface AddBasket = new iOnClickInterface() {
         @Override
         public void setClick(View view, int position) {
-            Basket Item = BasketList.stream()
-                    .filter(item -> item.Item.Id == position)
-                    .findAny().orElse(null);
 
-            Item FindItem = Items.stream()
-                    .filter(item -> item.Id == position)
-                    .findAny().orElse(null);
-
-            if (Item == null) {
-                Item = new Basket(FindItem, 1);
-                BasketList.add(Item);
-            } else {
-                Item.Count++;
+            if (position < 0 || position >= Items.size()) {
+                return;
             }
-            Toast.makeText(Context, "Товар добавлен в корзину", Toast.LENGTH_SHORT).show();
+
+            Item itemToAdd = Items.get(position);
+
+
+            Basket existingBasket = null;
+            for (Basket basket : BasketList) {
+                if (basket.Item.Id == itemToAdd.Id) {
+                    existingBasket = basket;
+                    break;
+                }
+            }
+
+            if (existingBasket == null) {
+
+                Basket newBasket = new Basket(itemToAdd, 1);
+                BasketList.add(newBasket);
+                Toast.makeText(Context, "Товар '" + itemToAdd.Name + "' добавлен в корзину", Toast.LENGTH_SHORT).show();
+            } else {
+
+                existingBasket.Count++;
+                Toast.makeText(Context, "Количество товара '" + itemToAdd.Name + "' увеличено", Toast.LENGTH_SHORT).show();
+            }
         }
     };
 

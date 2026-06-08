@@ -36,14 +36,19 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ItemAdapter.ViewHolder holder, int position) {
-        Item Item = Items.get(position);
-        holder.TvName.setText(Item.Name);
-        holder.TvModell.setText(Item.Modell);
-        holder.TvPrice.setText("₽ " + String.valueOf(Item.Price));
+        Item item = Items.get(position);
+
+        holder.TvName.setText(item.Name);
+        holder.TvModell.setText(item.Modell);
+        holder.TvPrice.setText("₽ " + String.valueOf(item.Price));
+
+
         holder.bthAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddBasket.setClick(view, Item.Id);
+                if (AddBasket != null) {
+                    AddBasket.setClick(view, position);
+                }
             }
         });
     }
