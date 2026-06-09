@@ -14,71 +14,91 @@ import com.example.recycler_view_romanov.R;
 import com.example.recycler_view_romanov.iOnClickInterface;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder> {
+
     public iOnClickInterface Delete, Cost;
     public LayoutInflater Inflater;
     public ArrayList<Basket> BasketItems;
+    private Map<Integer, Integer> swipeStates;
 
-    public BasketAdapter(Context context, ArrayList<Basket> basketItems, iOnClickInterface delete, iOnClickInterface cost) {
+    public BasketAdapter(Context context, ArrayList<Basket> basketItems,
+                         iOnClickInterface delete, iOnClickInterface cost,
+                         Map<Integer, Integer> swipeStates) {
         this.Inflater = LayoutInflater.from(context);
         this.BasketItems = basketItems;
         this.Delete = delete;
         this.Cost = cost;
+        this.swipeStates = swipeStates;
     }
 
     @Override
-    public BasketAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = Inflater.inflate(R.layout.item_basket, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(BasketAdapter.ViewHolder holder, int position) {
-        Basket basketItem = BasketItems.get(position);
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        Basket item = BasketItems.get(position);
 
-        holder.tvName.setText(basketItem.Item.Name);
-        holder.tvPrice.setText("₽ " + String.valueOf(basketItem.Item.Price));
-        holder.tvCount.setText(String.valueOf(basketItem.Count));
+        holder.tvName.setText(item.Item.Name);
+        holder.tvPrice.setText("₽ " + item.Item.Price);
+        holder.tvCount.setText(String.valueOf(item.Count));
 
-        holder.llCount.setVisibility(View.VISIBLE);
-        holder.bthDelete.setVisibility(View.GONE);
+        Integer state = swipeStates.get(position);
 
-        holder.bthPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int pos = holder.getAdapterPosition();
-                if (pos != RecyclerView.NO_POSITION) {
-                    basketItem.Count++;
-                    holder.tvCount.setText(String.valueOf(basketItem.Count));
-                    if (Cost != null) {
-                        Cost.setClick(view, pos);
-                    }
-                }
+        holder.itemView.setClickable(true);
+        holder.bthPlus.setClickable(false);
+        holder.bthMinus.setClickable(false);
+        holder.bthDelete.setClickable(false);
+        holder.llCount.setClickable(false);
+
+        if (state == null || state == 0) {
+            holder.llCount.setVisibility(View.GONE);
+            holder.bthDelete.setVisibility(View.GONE);
+        } else if (state == 1) {
+            holder.llCount.setVisibility(View.GONE);
+            holder.bthDelete.setVisibility(View.VISIBLE);
+
+            holder.itemView.setClickable(false);
+            holder.bthDelete.setClickable(true);
+        } else if (state == 2) {
+            holder.llCount.setVisibility(View.VISIBLE);
+            holder.bthDelete.setVisibility(View.GONE);
+
+            holder.itemView.setClickable(false);
+            holder.llCount.setClickable(true);
+            holder.bthPlus.setClickable(true);
+            holder.bthMinus.setClickable(true);
+        }
+
+        holder.bthPlus.setOnClickListener(v -> {
+            int pos = holder.getAdapterPosition();
+            if (pos != RecyclerView.NO_POSITION && pos < BasketItems.size()) {
+                BasketItems.get(pos).Count++;
+                holder.tvCount.setText(String.valueOf(BasketItems.get(pos).Count));
+                if (Cost != null) Cost.setClick(v, pos);
             }
         });
 
-        holder.bthMinus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int pos = holder.getAdapterPosition();
-                if (pos != RecyclerView.NO_POSITION && basketItem.Count > 1) {
+        holder.bthMinus.setOnClickListener(v -> {
+            int pos = holder.getAdapterPosition();
+            if (pos != RecyclerView.NO_POSITION && pos < BasketItems.size()) {
+                Basket basketItem = BasketItems.get(pos);
+                if (basketItem.Count > 1) {
                     basketItem.Count--;
                     holder.tvCount.setText(String.valueOf(basketItem.Count));
-                    if (Cost != null) {
-                        Cost.setClick(view, pos);
-                    }
+                    if (Cost != null) Cost.setClick(v, pos);
                 }
             }
         });
 
-        holder.bthDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int pos = holder.getAdapterPosition();
-                if (pos != RecyclerView.NO_POSITION && Delete != null) {
-                    Delete.setClick(view, pos);
-                }
+        holder.bthDelete.setOnClickListener(v -> {
+            int pos = holder.getAdapterPosition();
+            if (pos != RecyclerView.NO_POSITION && Delete != null) {
+                Delete.setClick(v, pos);
             }
         });
     }
@@ -88,10 +108,10 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
         return BasketItems.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvName, tvPrice, tvCount;
-        public ImageView bthPlus, bthMinus;
-        public LinearLayout bthDelete, llCount;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tvName, tvPrice, tvCount;
+        ImageView bthPlus, bthMinus;
+        LinearLayout bthDelete, llCount;
 
         ViewHolder(View view) {
             super(view);

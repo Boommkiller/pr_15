@@ -8,7 +8,8 @@ public class Item {
     public Integer IdCategory;
 
 
-    public Item(String name, String modell, Integer price, Integer idCategory) {
+    public Item(int id, String name, String modell, Integer price, Integer idCategory) {
+        this.Id = id;
         this.Name = name;
         this.Modell = modell;
         this.Price = price;

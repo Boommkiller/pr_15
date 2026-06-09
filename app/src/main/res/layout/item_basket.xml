@@ -22,14 +22,19 @@
             android:layout_marginRight="10dp"
             android:orientation="vertical"
             android:background="@drawable/background_add"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true"
+            android:descendantFocusability="afterDescendants">
 
             <ImageView
                 android:id="@+id/bthPlus"
                 android:layout_width="14dp"
                 android:layout_height="14dp"
                 android:layout_marginLeft="22dp"
-                android:src="@drawable/ic_plus" />
+                android:src="@drawable/ic_plus"
+                android:clickable="true"
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/tv_count"
@@ -38,7 +43,8 @@
                 android:textColor="@color/white"
                 android:layout_marginTop="15dp"
                 android:text="1"
-                android:gravity="center" />
+                android:gravity="center"
+                android:clickable="false" />
 
             <ImageView
                 android:id="@+id/bthMinus"
@@ -46,7 +52,9 @@
                 android:layout_height="14dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="22dp"
-                android:src="@drawable/ic_minus" />
+                android:src="@drawable/ic_minus"
+                android:clickable="true"
+                android:focusable="true" />
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,7 +63,9 @@
             android:layout_height="108dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/item_category_background"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:clickable="false"
+            android:focusable="false">
 
             <ImageView
                 android:id="@+id/img"
@@ -103,7 +113,8 @@
             android:layout_height="104dp"
             android:background="@drawable/background_delete"
             android:orientation="horizontal"
-            android:visibility="gone" />
-
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
